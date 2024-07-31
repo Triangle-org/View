@@ -24,10 +24,10 @@
  *              For any questions, please contact <triangle@localzet.com>
  */
 
-use Triangle\View\Blade;
-use Triangle\View\Raw;
-use Triangle\View\ThinkPHP;
-use Triangle\View\Twig;
+use Triangle\View\Render\Blade;
+use Triangle\View\Render\Raw;
+use Triangle\View\Render\ThinkPHP;
+use Triangle\View\Render\Twig;
 
 return [
     'handler' => match (env('VIEW_HANDLER', 'raw')) {
