@@ -23,7 +23,9 @@
   "autoload": {
     "psr-4": {
       "Triangle\\": "",
-      "Triangle\\View\\": "src"
+      "Triangle\\View\\": "src",
+      "support\\": "src/Support/",
+      "Support\\": "src/Support/"
     },
     "files": [
       "src/functions.php"
