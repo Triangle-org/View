@@ -36,5 +36,8 @@
     "triangle/engine": "*"
   },
   "suggest": {
+    "twig/twig": "For Twig render",
+    "jenssegers/blade": "For Blade render",
+    "topthink/think-template": "For ThinkPHP render"
   }
 }
