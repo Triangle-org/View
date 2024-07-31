@@ -1,0 +1,40 @@
+{
+  "name": "triangle/view",
+  "description": "Triangle View Component",
+  "type": "library",
+  "keywords": [
+    "localzet",
+    "Triangle",
+    "View"
+  ],
+  "license": "AGPL-3.0-or-later",
+  "authors": [
+    {
+      "role": "Developer",
+      "name": "Ivan Zorin",
+      "email": "creator@localzet.com",
+      "homepage": "https://github.com/localzet"
+    }
+  ],
+  "support": {
+    "email": "support@localzet.com",
+    "source": "https://github.com/Triangle-org/View"
+  },
+  "autoload": {
+    "psr-4": {
+      "Triangle\\": "",
+      "Triangle\\View\\": "src"
+    },
+    "file": [
+      "src/functions.php"
+    ]
+  },
+  "require": {
+    "php": ">=8.0"
+  },
+  "require-dev": {
+    "triangle/engine": "*"
+  },
+  "suggest": {
+  }
+}
