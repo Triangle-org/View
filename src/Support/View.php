@@ -50,7 +50,7 @@ class View
     {
         $request = request();
         $plugin = $request->plugin ?? '';
-        $handler = config($plugin ? "plugin.$plugin.view.handler" : 'view.handler');
+        $handler = config($plugin ? config('app.plugin_alias', 'plugin') . ".$plugin.view.handler" : 'view.handler');
         $handler::assign($name, $value);
     }
 
@@ -66,7 +66,7 @@ class View
     {
         $request = request();
         $plugin = $request->plugin ?? '';
-        $handler = config($plugin ? "plugin.$plugin.view.handler" : 'view.handler');
+        $handler = config($plugin ? config('app.plugin_alias', 'plugin') . ".$plugin.view.handler" : 'view.handler');
         return $handler::vars();
     }
 }

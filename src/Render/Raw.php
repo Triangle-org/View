@@ -51,7 +51,7 @@ class Raw extends AbstractRender implements RenderInterface
      */
     public static function render(string $template, array $vars, string $app = null, string $plugin = null): string
     {
-        $configPrefix = $plugin ? "plugin.$plugin." : '';
+        $configPrefix = $plugin ? config('app.plugin_alias', 'plugin') . ".$plugin." : '';
 
         foreach (config("{$configPrefix}view.options.pre_renders", []) as $render) {
             if (isset($render['template'])) {
@@ -102,7 +102,7 @@ class Raw extends AbstractRender implements RenderInterface
     {
         $request = request();
         $plugin = $request->plugin ?? '';
-        $configPrefix = $plugin ? "plugin.$plugin." : '';
+        $configPrefix = $plugin ? config('app.plugin_alias', 'plugin') . ".$plugin." : '';
 
         $view = config("{$configPrefix}view.templates.system.$template", basename(__DIR__) . "/Templates/$template.phtml");
 

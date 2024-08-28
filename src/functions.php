@@ -63,7 +63,7 @@ function view(string $template, array $vars = [], string $app = null, string $pl
 {
     $request = request();
     $plugin = $plugin === null ? ($request->plugin ?? '') : $plugin;
-    $handler = config($plugin ? "plugin.$plugin.view.handler" : 'view.handler');
+    $handler = config($plugin ? config('app.plugin_alias', 'plugin') . ".$plugin.view.handler" : 'view.handler');
     return new Response($http_code, [], $handler::render($template, $vars, $app, $plugin));
 }
 

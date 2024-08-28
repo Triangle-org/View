@@ -56,7 +56,7 @@ class Blade extends AbstractRender implements RenderInterface
         $app = $app === null ? ($request->app ?? '') : $app;
         $plugin = $plugin === null ? ($request->plugin ?? '') : $plugin;
 
-        $configPrefix = $plugin ? "plugin.$plugin." : '';
+        $configPrefix = $plugin ? config('app.plugin_alias', 'plugin') . ".$plugin." : '';
         $baseViewPath = $plugin ? base_path("plugin/$plugin/app") : app_path();
 
         $key = "$plugin-$app";
