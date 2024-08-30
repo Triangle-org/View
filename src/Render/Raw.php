@@ -104,7 +104,7 @@ class Raw extends AbstractRender implements RenderInterface
         $plugin = $request->plugin ?? '';
         $configPrefix = $plugin ? config('app.plugin_alias', 'plugin') . ".$plugin." : '';
 
-        $view = config("{$configPrefix}view.templates.system.$template", basename(__DIR__) . "/Templates/$template.phtml");
+        $view = config("{$configPrefix}view.templates.system.$template", __DIR__ . "/../Templates/$template.phtml");
 
         if (isset($request->_view_vars)) {
             extract((array)$request->_view_vars);
