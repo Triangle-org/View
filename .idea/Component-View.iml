@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/" isTestSource="false" packagePrefix="Triangle\" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="Triangle\View\" />
       <sourceFolder url="file://$MODULE_DIR$/src/Support" isTestSource="false" packagePrefix="support\" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/localzet/events" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
