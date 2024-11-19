@@ -59,24 +59,26 @@ class Blade extends AbstractRender implements RenderInterface
         $configPrefix = $plugin ? config('app.plugin_alias', 'plugin') . ".$plugin." : '';
         $baseViewPath = $plugin ? base_path("plugin/$plugin/app") : app_path();
 
-        $key = "$plugin-$app";
-        if (!isset($views[$key])) {
-
+        if ($template[0] === '/') {
+            $viewPath = base_path();
+            $template = substr($template, 1);
+        } else {
             $viewPath = $app === '' ?
                 "$baseViewPath/view" :
                 "$baseViewPath/$app/view";
-
-            $views[$key] = new BladeView($viewPath, runtime_path('views'));
+        }
+        if (!isset($views[$viewPath])) {
+            $views[$viewPath] = new BladeView($viewPath, runtime_path('views'));
 
             $extension = config("{$configPrefix}view.extension");
             if ($extension) {
-                $extension($views[$key]);
+                $extension($views[$viewPath]);
             }
         }
 
         if (isset($request->_view_vars)) {
             $vars = array_merge((array)$request->_view_vars, $vars);
         }
-        return $views[$key]->render($template, $vars);
+        return $views[$viewPath]->render($template, $vars);
     }
 }

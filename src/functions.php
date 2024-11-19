@@ -52,65 +52,90 @@ function responseView(array $data, $status = null, array $headers = []): Respons
 }
 
 /**
- * @param string $template
+ * @param string|array|null $template
  * @param array $vars
  * @param string|null $app
  * @param string|null $plugin
  * @param int $http_code
  * @return Response
  */
-function view(string $template, array $vars = [], string $app = null, string $plugin = null, int $http_code = 200): Response
+function view(mixed $template = null, array $vars = [], string $app = null, string $plugin = null, int $http_code = 200): Response
 {
-    $request = request();
-    $plugin = $plugin === null ? ($request->plugin ?? '') : $plugin;
+    [$template, $vars, $app, $plugin] = template_inputs($template, $vars, $app, $plugin);
     $handler = config($plugin ? config('app.plugin_alias', 'plugin') . ".$plugin.view.handler" : 'view.handler');
     return new Response($http_code, [], $handler::render($template, $vars, $app, $plugin));
 }
 
 /**
- * @param string $template
+ * @param string|array|null $template
  * @param array $vars
  * @param string|null $app
+ * @param string|null $plugin
  * @return Response
  * @throws Throwable
  */
-function raw_view(string $template, array $vars = [], string $app = null): Response
+function raw_view(mixed $template = null, array $vars = [], string $app = null, string $plugin = null): Response
 {
-    return new Response(200, [], Raw::render($template, $vars, $app));
+    return new Response(200, [], Raw::render(...template_inputs($template, $vars, $app, $plugin)));
 }
 
 /**
- * @param string $template
+ * @param string|array|null $template
  * @param array $vars
  * @param string|null $app
+ * @param string|null $plugin
  * @return Response
  */
-function blade_view(string $template, array $vars = [], string $app = null): Response
+function blade_view(mixed $template = null, array $vars = [], string $app = null, string $plugin = null): Response
 {
-    return new Response(200, [], Blade::render($template, $vars, $app));
+    return new Response(200, [], Blade::render(...template_inputs($template, $vars, $app, $plugin)));
 }
 
 /**
- * @param string $template
+ * @param string|array|null $template
  * @param array $vars
  * @param string|null $app
+ * @param string|null $plugin
  * @return Response
  */
-function think_view(string $template, array $vars = [], string $app = null): Response
+function think_view(mixed $template = null, array $vars = [], string $app = null, string $plugin = null): Response
 {
-    return new Response(200, [], ThinkPHP::render($template, $vars, $app));
+    return new Response(200, [], ThinkPHP::render(...template_inputs($template, $vars, $app, $plugin)));
 }
 
 /**
- * @param string $template
+ * @param string|array|null $template
  * @param array $vars
  * @param string|null $app
+ * @param string|null $plugin
  * @return Response
- * @throws Twig\Error\LoaderError
- * @throws Twig\Error\RuntimeErro
- * @throws Twig\Error\SyntaxError
  */
-function twig_view(string $template, array $vars = [], string $app = null): Response
+function twig_view(mixed $template = null, array $vars = [], string $app = null, string $plugin = null): Response
 {
-    return new Response(200, [], Twig::render($template, $vars, $app));
+    return new Response(200, [], Twig::render(...template_inputs($template, $vars, $app, $plugin)));
+}
+
+/**
+ * @param string|array|null $template
+ * @param array $vars
+ * @param string|null $app
+ * @param string|null $plugin
+ * @return array
+ */
+function template_inputs(mixed $template, array $vars, ?string $app, ?string $plugin): array
+{
+    $request = request();
+    $plugin = $plugin === null ? ($request->plugin ?? '') : $plugin;
+    if (is_array($template)) {
+        $vars = $template;
+        $template = null;
+    }
+    if ($template === null && $controller = $request->controller) {
+        $controllerSuffix = config($plugin ? "plugin.$plugin.app.controller_suffix" : "app.controller_suffix", '');
+        $controllerName = $controllerSuffix !== '' ? substr($controller, 0, -strlen($controllerSuffix)) : $controller;
+        $path = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', substr(strrchr($controllerName, '\\'), 1)));
+        $actionFileBaseName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $request->action));
+        $template = "$path/$actionFileBaseName";
+    }
+    return [$template, $vars, $app, $plugin];
 }

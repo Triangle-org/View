@@ -90,10 +90,11 @@ abstract class AbstractRender implements RenderInterface
         $baseViewPath = $plugin ? base_path("plugin/$plugin/app") : app_path();
         $viewSuffix = config("{$configPrefix}view.options.view_suffix", 'html');
 
-        return
-            $app === '' ?
+        return $template[0] === '/'
+            ? base_path("$template.$viewSuffix")
+            : ($app === '' ?
                 "$baseViewPath/view/$template.$viewSuffix" :
-                "$baseViewPath/$app/view/$template.$viewSuffix";
+                "$baseViewPath/$app/view/$template.$viewSuffix");
     }
 
     /**
