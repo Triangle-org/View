@@ -24,7 +24,7 @@
  *              For any questions, please contact <triangle@localzet.com>
  */
 
-use support\Response;
+use Triangle\Response;
 use Triangle\View\Render\Blade;
 use Triangle\View\Render\Raw;
 use Triangle\View\Render\ThinkPHP;

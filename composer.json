@@ -31,9 +31,12 @@
       "src/functions.php"
     ]
   },
+  "require-dev": {
+    "rector/rector": "*"
+  },
   "require": {
-    "php": ">=8.0",
-    "triangle/engine": ">=6.3"
+    "php": "^8",
+    "triangle/engine": "^8"
   },
   "suggest": {
     "twig/twig": "For Twig render",
