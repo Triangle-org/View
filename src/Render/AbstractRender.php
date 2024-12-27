@@ -64,7 +64,6 @@ abstract class AbstractRender implements RenderInterface
 
     /**
      * Возвращает все переменные представления
-     * @return array
      */
     public static function vars(): array
     {
@@ -74,7 +73,6 @@ abstract class AbstractRender implements RenderInterface
     /**
      * Строит представление с заданными параметрами
      * @param array $params Параметры представления
-     * @return string
      */
     public static function build(array $params): string
     {
@@ -83,8 +81,8 @@ abstract class AbstractRender implements RenderInterface
         $app = $params['app'] ?? null;
         $plugin = $params['plugin'] ?? null;
 
-        $app = $app === null ? ($request->app ?? '') : $app;
-        $plugin = $plugin === null ? ($request->plugin ?? '') : $plugin;
+        $app ??= $request->app ?? '';
+        $plugin ??= $request->plugin ?? '';
 
         $configPrefix = $plugin ? config('app.plugin_alias', 'plugin') . ".$plugin." : '';
         $baseViewPath = $plugin ? base_path("plugin/$plugin/app") : app_path();
@@ -114,7 +112,6 @@ abstract class AbstractRender implements RenderInterface
 
     /**
      * Возвращает все шаблоны для предварительного рендеринга
-     * @return array
      */
     public static function getPreRenders(): array
     {
@@ -138,7 +135,6 @@ abstract class AbstractRender implements RenderInterface
 
     /**
      * Возвращает все шаблоны для пост-рендеринга
-     * @return array
      */
     public static function getPostRenders(): array
     {

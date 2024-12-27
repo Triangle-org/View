@@ -59,8 +59,8 @@ class Twig extends AbstractRender implements RenderInterface
         static $views = [];
         $request = request();
 
-        $app = $app === null ? ($request->app ?? '') : $app;
-        $plugin = $plugin === null ? ($request->plugin ?? '') : $plugin;
+        $app ??= $request->app ?? '';
+        $plugin ??= $request->plugin ?? '';
 
         $configPrefix = $plugin ? config('app.plugin_alias', 'plugin') . ".$plugin." : '';
         $baseViewPath = $plugin ? base_path("plugin/$plugin/app") : app_path();
@@ -74,6 +74,7 @@ class Twig extends AbstractRender implements RenderInterface
                 ? "$baseViewPath/view/"
                 : "$baseViewPath/$app/view/";
         }
+        
         if (!isset($views[$viewPath])) {
             $views[$viewPath] = new Environment(new FilesystemLoader($viewPath), config("{$configPrefix}view.options", []));
 
@@ -86,6 +87,7 @@ class Twig extends AbstractRender implements RenderInterface
         if (isset($request->_view_vars)) {
             $vars = array_merge((array)$request->_view_vars, $vars);
         }
+        
         return $views[$viewPath]->render("$template.$viewSuffix", $vars);
     }
 }

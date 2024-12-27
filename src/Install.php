@@ -36,7 +36,6 @@ class Install
 
     /**
      * Установка плагина
-     * @return void
      */
     public static function install(): void
     {
@@ -45,10 +44,10 @@ class Install
             && is_dir($source)
             && !empty($sourceFiles = glob($source . "/*.php"))
         ) {
-            foreach ($sourceFiles as $file) {
-                $target = config_path(str_replace($source, "", $file));
+            foreach ($sourceFiles as $sourceFile) {
+                $target = config_path(str_replace($source, "", $sourceFile));
                 if (!file_exists($target)) {
-                    copy_dir($file, $target);
+                    copy_dir($sourceFile, $target);
                     echo "Создан $target\r\n";
                 }
             }

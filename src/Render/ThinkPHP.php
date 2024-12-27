@@ -54,8 +54,8 @@ class ThinkPHP extends AbstractRender implements RenderInterface
     {
         $request = request();
 
-        $app = $app === null ? ($request->app ?? '') : $app;
-        $plugin = $plugin === null ? ($request->plugin ?? '') : $plugin;
+        $app ??= $request->app ?? '';
+        $plugin ??= $request->plugin ?? '';
 
         $configPrefix = $plugin ? config('app.plugin_alias', 'plugin') . ".$plugin." : '';
         $baseViewPath = $plugin ? base_path("plugin/$plugin/app") : app_path();
@@ -84,6 +84,7 @@ class ThinkPHP extends AbstractRender implements RenderInterface
         if (isset($request->_view_vars)) {
             $vars = array_merge((array)$request->_view_vars, $vars);
         }
+        
         $views->fetch($template, $vars);
 
         return ob_get_clean();

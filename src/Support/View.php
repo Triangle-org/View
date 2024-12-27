@@ -42,7 +42,6 @@ class View
      *
      * @param mixed $name Имя переменной.
      * @param mixed|null $value Значение переменной.
-     * @return void
      *
      * @link https://symfony.com/doc/current/templates.html#template-variables
      */

@@ -75,17 +75,20 @@ class Raw extends AbstractRender implements RenderInterface
         if (isset($request->_view_vars)) {
             extract((array)$request->_view_vars);
         }
+        
         extract($vars);
         ob_start();
 
         try {
             foreach (array_merge($preRenders, [$curRender], $postRenders) as $render) {
                 $file = static::build($render);
-                if (file_exists($file)) include $file;
+                if (file_exists($file)) {
+                    include $file;
+                }
             }
-        } catch (Throwable $e) {
+        } catch (Throwable $throwable) {
             ob_end_clean();
-            throw $e;
+            throw $throwable;
         }
 
         return ob_get_clean();
@@ -109,14 +112,15 @@ class Raw extends AbstractRender implements RenderInterface
         if (isset($request->_view_vars)) {
             extract((array)$request->_view_vars);
         }
+        
         extract($vars);
         ob_start();
 
         try {
             include $view;
-        } catch (Throwable $e) {
+        } catch (Throwable $throwable) {
             ob_end_clean();
-            throw $e;
+            throw $throwable;
         }
 
         return ob_get_clean();

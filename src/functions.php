@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @package     Triangle View Component
  * @link        https://github.com/Triangle-org/View
@@ -31,10 +33,6 @@ use Triangle\View\Render\ThinkPHP;
 use Triangle\View\Render\Twig;
 
 /**
- * @param array $data
- * @param null $status
- * @param array $headers
- * @return Response
  * @throws Throwable
  */
 function responseView(array $data, $status = null, array $headers = []): Response
@@ -46,6 +44,7 @@ function responseView(array $data, $status = null, array $headers = []): Respons
     ) {
         $status = $data['status'];
     }
+    
     $template = ($status == 200) ? 'success' : 'error';
 
     return new Response($status, $headers, Raw::renderSys($template, $data));
@@ -53,11 +52,8 @@ function responseView(array $data, $status = null, array $headers = []): Respons
 
 /**
  * @param string|array|null $template
- * @param array $vars
  * @param string|null $app
  * @param string|null $plugin
- * @param int $http_code
- * @return Response
  */
 function view(mixed $template = null, array $vars = [], string $app = null, string $plugin = null, int $http_code = 200): Response
 {
@@ -68,10 +64,8 @@ function view(mixed $template = null, array $vars = [], string $app = null, stri
 
 /**
  * @param string|array|null $template
- * @param array $vars
  * @param string|null $app
  * @param string|null $plugin
- * @return Response
  * @throws Throwable
  */
 function raw_view(mixed $template = null, array $vars = [], string $app = null, string $plugin = null): Response
@@ -81,10 +75,8 @@ function raw_view(mixed $template = null, array $vars = [], string $app = null, 
 
 /**
  * @param string|array|null $template
- * @param array $vars
  * @param string|null $app
  * @param string|null $plugin
- * @return Response
  */
 function blade_view(mixed $template = null, array $vars = [], string $app = null, string $plugin = null): Response
 {
@@ -93,10 +85,8 @@ function blade_view(mixed $template = null, array $vars = [], string $app = null
 
 /**
  * @param string|array|null $template
- * @param array $vars
  * @param string|null $app
  * @param string|null $plugin
- * @return Response
  */
 function think_view(mixed $template = null, array $vars = [], string $app = null, string $plugin = null): Response
 {
@@ -105,10 +95,8 @@ function think_view(mixed $template = null, array $vars = [], string $app = null
 
 /**
  * @param string|array|null $template
- * @param array $vars
  * @param string|null $app
  * @param string|null $plugin
- * @return Response
  */
 function twig_view(mixed $template = null, array $vars = [], string $app = null, string $plugin = null): Response
 {
@@ -117,19 +105,16 @@ function twig_view(mixed $template = null, array $vars = [], string $app = null,
 
 /**
  * @param string|array|null $template
- * @param array $vars
- * @param string|null $app
- * @param string|null $plugin
- * @return array
  */
 function template_inputs(mixed $template, array $vars, ?string $app, ?string $plugin): array
 {
     $request = request();
-    $plugin = $plugin === null ? ($request->plugin ?? '') : $plugin;
+    $plugin ??= $request->plugin ?? '';
     if (is_array($template)) {
         $vars = $template;
         $template = null;
     }
+    
     if ($template === null && $controller = $request->controller) {
         $controllerSuffix = config($plugin ? "plugin.$plugin.app.controller_suffix" : "app.controller_suffix", '');
         $controllerName = $controllerSuffix !== '' ? substr($controller, 0, -strlen($controllerSuffix)) : $controller;
@@ -137,5 +122,6 @@ function template_inputs(mixed $template, array $vars, ?string $app, ?string $pl
         $actionFileBaseName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $request->action));
         $template = "$path/$actionFileBaseName";
     }
+    
     return [$template, $vars, $app, $plugin];
 }
