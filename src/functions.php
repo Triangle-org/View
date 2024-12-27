@@ -44,7 +44,7 @@ function responseView(array $data, $status = null, array $headers = []): Respons
     ) {
         $status = $data['status'];
     }
-    
+
     $template = ($status == 200) ? 'success' : 'error';
 
     return new Response($status, $headers, Raw::renderSys($template, $data));
@@ -114,7 +114,7 @@ function template_inputs(mixed $template, array $vars, ?string $app, ?string $pl
         $vars = $template;
         $template = null;
     }
-    
+
     if ($template === null && $controller = $request->controller) {
         $controllerSuffix = config($plugin ? "plugin.$plugin.app.controller_suffix" : "app.controller_suffix", '');
         $controllerName = $controllerSuffix !== '' ? substr($controller, 0, -strlen($controllerSuffix)) : $controller;
@@ -122,6 +122,6 @@ function template_inputs(mixed $template, array $vars, ?string $app, ?string $pl
         $actionFileBaseName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $request->action));
         $template = "$path/$actionFileBaseName";
     }
-    
+
     return [$template, $vars, $app, $plugin];
 }

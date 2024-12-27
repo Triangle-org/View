@@ -67,7 +67,7 @@ class Blade extends AbstractRender implements RenderInterface
                 "$baseViewPath/view" :
                 "$baseViewPath/$app/view";
         }
-        
+
         if (!isset($views[$viewPath])) {
             $views[$viewPath] = new BladeView($viewPath, runtime_path('views'));
 
@@ -80,7 +80,7 @@ class Blade extends AbstractRender implements RenderInterface
         if (isset($request->_view_vars)) {
             $vars = array_merge((array)$request->_view_vars, $vars);
         }
-        
+
         return $views[$viewPath]->render($template, $vars);
     }
 }

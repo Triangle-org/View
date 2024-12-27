@@ -84,7 +84,7 @@ class ThinkPHP extends AbstractRender implements RenderInterface
         if (isset($request->_view_vars)) {
             $vars = array_merge((array)$request->_view_vars, $vars);
         }
-        
+
         $views->fetch($template, $vars);
 
         return ob_get_clean();

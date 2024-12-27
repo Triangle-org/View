@@ -75,7 +75,7 @@ class Raw extends AbstractRender implements RenderInterface
         if (isset($request->_view_vars)) {
             extract((array)$request->_view_vars);
         }
-        
+
         extract($vars);
         ob_start();
 
@@ -112,7 +112,7 @@ class Raw extends AbstractRender implements RenderInterface
         if (isset($request->_view_vars)) {
             extract((array)$request->_view_vars);
         }
-        
+
         extract($vars);
         ob_start();
 
