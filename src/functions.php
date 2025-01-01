@@ -1,5 +1,29 @@
 <?php
 
+/**
+ * @package     Triangle View Component
+ * @link        https://github.com/Triangle-org/View
+ *
+ * @author      Ivan Zorin <creator@localzet.com>
+ * @copyright   Copyright (c) 2023-2025 Triangle Framework Team
+ * @license     https://www.gnu.org/licenses/agpl-3.0 GNU Affero General Public License v3.0
+ *
+ *              This program is free software: you can redistribute it and/or modify
+ *              it under the terms of the GNU Affero General Public License as published
+ *              by the Free Software Foundation, either version 3 of the License, or
+ *              (at your option) any later version.
+ *
+ *              This program is distributed in the hope that it will be useful,
+ *              but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *              GNU Affero General Public License for more details.
+ *
+ *              You should have received a copy of the GNU Affero General Public License
+ *              along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *              For any questions, please contact <triangle@localzet.com>
+ */
+
 declare(strict_types=1);
 
 /**
@@ -118,9 +142,13 @@ function template_inputs(mixed $template, array $vars, ?string $app, ?string $pl
     if ($template === null && $controller = $request->controller) {
         $controllerSuffix = config($plugin ? "plugin.$plugin.app.controller_suffix" : "app.controller_suffix", '');
         $controllerName = $controllerSuffix !== '' ? substr($controller, 0, -strlen($controllerSuffix)) : $controller;
-        $path = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', substr(strrchr($controllerName, '\\'), 1)));
-        $actionFileBaseName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $request->action));
-        $template = "$path/$actionFileBaseName";
+
+        $path = str_replace(['controller', 'Controller', '\\'], ['view', 'view', '/'], $controllerName);
+        $path = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $path));
+        $backtrace = debug_backtrace();
+        $action = $backtrace[2]['function'] ?? $request->action;
+        $actionFileBaseName = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $action));
+        $template = "/$path/$actionFileBaseName";
     }
 
     return [$template, $vars, $app, $plugin];
