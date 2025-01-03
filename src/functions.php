@@ -50,6 +50,7 @@ declare(strict_types=1);
  *              For any questions, please contact <triangle@localzet.com>
  */
 
+use Triangle\Engine\App;
 use Triangle\Response;
 use Triangle\View\Render\Blade;
 use Triangle\View\Render\Raw;
@@ -145,8 +146,20 @@ function template_inputs(mixed $template, array $vars, ?string $app, ?string $pl
 
         $path = str_replace(['controller', 'Controller', '\\'], ['view', 'view', '/'], $controllerName);
         $path = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $path));
-        $backtrace = debug_backtrace();
-        $action = $backtrace[2]['function'] ?? $request->action;
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        $action = $request->action;
+        foreach ($backtrace as $backtraceItem) {
+            if (!isset($backtraceItem['class']) || !isset($backtraceItem['function'])) {
+                continue;
+            }
+            if ($backtraceItem['class'] === App::class) {
+                break;
+            }
+            if (preg_match('/\\\\controller\\\\/i', $backtraceItem['class'])) {
+                $action = $backtraceItem['function'];
+                break;
+            }
+        }
         $actionFileBaseName = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $action));
         $template = "/$path/$actionFileBaseName";
     }

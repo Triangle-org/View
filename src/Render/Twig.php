@@ -67,8 +67,13 @@ class Twig extends AbstractRender implements RenderInterface
         $viewSuffix = config("{$configPrefix}view.options.view_suffix", 'html');
 
         if ($template[0] === '/') {
-            $viewPath = base_path();
-            $template = substr($template, 1);
+            $template = ltrim($template, '/');
+            if (str_contains($template, '/view/')) {
+                [$viewPath, $template] = explode('/view/', $template, 2);
+                $viewPath = base_path("$viewPath/view");
+            } else {
+                $viewPath = base_path();
+            }
         } else {
             $viewPath = $app === ''
                 ? "$baseViewPath/view/"
