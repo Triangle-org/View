@@ -34,9 +34,12 @@
   "require-dev": {
     "rector/rector": "*"
   },
+  "scripts": {
+    "test": "php tests/engine_compatibility.php"
+  },
   "require": {
     "php": "^8.1",
-    "triangle/engine": "^8.1"
+    "triangle/engine": "^8.1 || ^9.0"
   },
   "suggest": {
     "twig/twig": "For Twig render",
