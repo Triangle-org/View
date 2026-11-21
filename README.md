@@ -33,7 +33,7 @@ Triangle View provides a small adapter layer for rendering PHP templates and, wh
 Install the package with Composer:
 
 ```sh
-composer require triangle/view
+composer require triangle/view:^2.1
 ```
 
 The package's `Install` helper copies the default `view.php` configuration into the application's config directory when it does not already exist. The default handler is `raw`; set `VIEW_HANDLER` to `blade`, `twig`, or `think` to select an optional adapter. Install the corresponding template engine package separately.
